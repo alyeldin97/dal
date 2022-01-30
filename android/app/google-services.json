@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "115941721608",
+    "project_id": "dall-1d523",
+    "storage_bucket": "dall-1d523.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115941721608:android:393df869228be18ea7f3bd",
+        "android_client_info": {
+          "package_name": "com.example.dall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115941721608-plmsajis56hfnek8tiriht4ka0n3r8nl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dall",
+            "certificate_hash": "f46ba5b20d9d0c411e5b5febb664c03e71187fed"
+          }
+        },
+        {
+          "client_id": "115941721608-3371dfksudfo2h60sd6eef4btjmdpbj6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX7xaH0QxMMKo_ZcYoph4eap04p44icYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115941721608-3371dfksudfo2h60sd6eef4btjmdpbj6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
