@@ -17,3 +17,10 @@ defaultFailure(){
         message: FailureMessages.defaultFailure,
       );
 }
+
+socketFailure(){
+  return Failure(
+        code: FailureCodes.socket,
+        message: FailureMessages.socket,
+      );
+}

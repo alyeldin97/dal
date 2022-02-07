@@ -20,6 +20,8 @@ class JsonKeys {
   static const String comments = 'comments';
   static const String date = 'date';
   static const String phoneNumber = 'phone_number';
+  static const String isMale = 'is_male';
+
 
 
 

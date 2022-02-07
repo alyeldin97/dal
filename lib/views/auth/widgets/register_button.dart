@@ -24,6 +24,7 @@ class RegisterButton extends StatelessWidget {
                 email: emailControllerRegister.text,
                 password: passwordControllerRegister.text,
                 phoneNumber: phoneNumberControllerRegister.text,
+                isMale: isMale(registerCubit.isMale),
               );
               if (allFieldsAreValid) {
                 registerCubit.signUpWithEmailAndPassword(registerUserEntity);
@@ -42,5 +43,13 @@ class RegisterButton extends StatelessWidget {
 
   void startValidating() {
     registerCubit.startValidating();
+  }
+
+  bool isMale(int isMaleFromCubitRadio) {
+    if (isMaleFromCubitRadio == 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

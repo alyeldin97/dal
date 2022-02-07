@@ -4,6 +4,17 @@ class HiveHelper {
   String boxName;
   HiveHelper(this.boxName);
 
+  Future<bool> existsAndNotNull(key) async {
+    bool exists = await Hive.boxExists(boxName);
+    dynamic value = await getWithKey(key);
+    bool notNull = value != null;
+    if (exists && notNull) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<Box> openBox() async {
     return await Hive.openBox(boxName);
   }

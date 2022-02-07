@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:projects_template/entities/category.dart';
-import 'package:projects_template/views/choose_category/widgets/category_item.dart';
-import 'package:projects_template/views/utils/colors.dart';
-import 'package:projects_template/views/utils/textstyles.dart';
+import 'category_item.dart';
 
 class CategoriesGrid extends StatelessWidget {
   final List<CategoryEntity> categories;
-  const CategoriesGrid({required this.categories,Key? key}) : super(key: key);
+  const CategoriesGrid({required this.categories, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class CategoriesGrid extends StatelessWidget {
         ),
         itemCount: categories.length,
         itemBuilder: (context, index) {
-          CategoryEntity currentCategory =categories[index];
+          CategoryEntity currentCategory = categories[index];
           return CategoryItem(currentCategory);
         },
       ),

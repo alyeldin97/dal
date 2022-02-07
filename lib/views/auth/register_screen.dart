@@ -3,16 +3,30 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:projects_template/blocs/register_cubit/register_cubit.dart';
+import 'package:projects_template/configs/constants/failure.dart';
+import 'package:projects_template/configs/constants/hive.dart';
 import 'package:projects_template/configs/global_app_dependencies.dart';
-import 'package:projects_template/views/auth/widgets/image.dart';
+import 'package:projects_template/services/helpers/hive_helper.dart';
+import 'package:projects_template/services/local_datasources/auth/auth_impl_hive.dart';
+import 'package:projects_template/services/remote_datasources/auth/auth_impl_firebase.dart';
+import 'package:projects_template/services/remote_datasources/images_upload/images_upload_remote_ds_impl_firebase.dart';
+import 'package:projects_template/services/remote_datasources/users/users_remote_ds_impl.dart';
+import 'package:projects_template/services/repo/auth/auth_impl_firebase.dart';
+import 'package:projects_template/services/repo/users/users_repo_impl_firebase.dart';
 import 'package:projects_template/views/auth/widgets/login_nav_button.dart';
+import 'package:projects_template/views/auth/widgets/radio.dart';
 import 'package:projects_template/views/auth/widgets/register_button.dart';
 import 'package:projects_template/views/auth/widgets/register_form.dart';
+import 'package:projects_template/views/auth/widgets/register_image.dart';
+import 'package:projects_template/views/core/error_screen.dart';
 import 'package:projects_template/views/core/reusable_widgets.dart';
+import 'package:projects_template/views/splash_screen/splash_screen.dart';
 import 'package:projects_template/views/utils/colors.dart';
 import 'package:projects_template/views/utils/navigators.dart';
 import 'package:projects_template/views/utils/routes.dart';
+import 'package:projects_template/views/utils/textstyles.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -20,13 +34,21 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GlobalAppDependencies.registerCubit,
+      create: (context) => RegisterCubit(
+          UsersRepoImplFirebase(
+              usersRemoteDataSource: UsersRemoteDataSourceImplFirebase(),
+              imageUploadRemoteDataSource:
+                  ImageUploadRemoteDataSourceFirebaseImpl()),
+          AuthRepoFirebaseImpl(
+              AuthRemoteDataSourceFirebaseImpl(),
+              AuthLocalDataSourceImplHive(HiveHelper(HiveConstants.user)),
+              UsersRemoteDataSourceImplFirebase())),
       child: BlocListener<RegisterCubit, RegisterState>(
         listener: (context, state) {
-           if (state is RegisterWithEmailAndPasswordFailure) {
-            FlushbarHelper.createError(message: state.failure.message)
-                .show(context);
+          if (state is RegisterWithEmailAndPasswordFailure) {
+            showErrorPopUpOrScreen(state, context);
           } else if (state is RegisterWithEmailAndPasswordSuccess) {
+            initiateGlobalUser(state);
             navigateToChooseCategoryScreen(context);
           }
         },
@@ -38,10 +60,12 @@ class RegisterScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const LoginImage(),
+                    const RegisterImage(),
                     RegisterForm(),
                     const HeightBox(20),
+                    ReisterRadio(),
                     registerButtonOrLoading(state),
+                    const HeightBox(10),
                     const HeightBox(10),
                     const LoginNavButton(),
                   ],
@@ -62,7 +86,23 @@ class RegisterScreen extends StatelessWidget {
     }
   }
 
+  void initiateGlobalUser(state) {
+    CURRENT_USER = state.userEntity;
+  }
+
   void navigateToChooseCategoryScreen(context) {
     AppNavigator.navigateToRouteReplacement(Routes.chooseCategory, context);
+  }
+
+  void showErrorPopUpOrScreen(state, context) {
+    bool socketError = state.failure.code == FailureCodes.socket;
+    if (socketError) {
+      AppNavigator.navigateToScreen(
+          ErrorScreen(message: state.failure.message, screen: Screens.register),
+          context);
+      FocusScope.of(context).unfocus();
+    } else {
+      FlushbarHelper.createError(message: state.failure.message).show(context);
+    }
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:projects_template/entities/category.dart';
 import 'package:projects_template/views/auth/login_screen.dart';
 import 'package:projects_template/views/auth/register_screen.dart';
-import 'package:projects_template/views/choose_category/choose_category_screen.dart';
+import 'package:projects_template/views/choose_category_screen/choose_category_screen.dart';
+import 'package:projects_template/views/core/error_screen.dart';
 import 'package:projects_template/views/home/home_screen.dart';
 import 'package:projects_template/views/layout/lay_out_screen.dart';
 import 'package:projects_template/views/onboarding/onboarding_screen.dart';
@@ -16,6 +17,7 @@ class Routes {
   static const String layOut = "/layout";
   static const String home = "/home";
   static const String chooseCategory = "/choose_category";
+  static const String error = "/error";
 }
 
 class RouteGenerator {
@@ -27,6 +29,7 @@ class RouteGenerator {
     switch (routeSettings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+
       case Routes.onboardingRoute:
         return MaterialPageRoute(
             builder: (_) => const Directionality(

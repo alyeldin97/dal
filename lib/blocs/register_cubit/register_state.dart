@@ -8,8 +8,17 @@ abstract class RegisterState extends Equatable {
 }
 
 class RegisterInitial extends RegisterState {}
+
 class RegisterStartValidationState extends RegisterState {}
 
+class RegisterIsMaleSwitchedState extends RegisterState {
+  int isMale;
+  RegisterIsMaleSwitchedState(
+    this.isMale,
+  );
+  @override
+  List<Object> get props => [isMale];
+}
 
 class RegisterPasswordVisibilityToggledState extends RegisterState {
   bool isPasswordVisibile;
@@ -19,20 +28,17 @@ class RegisterPasswordVisibilityToggledState extends RegisterState {
 }
 
 class RegisterWithEmailAndPasswordLoading extends RegisterState {}
+
 class RegisterWithEmailAndPasswordSuccess extends RegisterState {
   UserEntity userEntity;
   RegisterWithEmailAndPasswordSuccess({
     required this.userEntity,
   });
-
 }
+
 class RegisterWithEmailAndPasswordFailure extends RegisterState {
   Failure failure;
   RegisterWithEmailAndPasswordFailure({
     required this.failure,
   });
 }
-
-
-
-

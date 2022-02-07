@@ -1,15 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:projects_template/entities/user.dart';
-
 import 'package:projects_template/entities/register.dart';
-
 import 'package:projects_template/entities/login.dart';
 import 'package:projects_template/models/user.dart';
 import 'package:projects_template/services/errors/failure.dart';
 import 'package:projects_template/services/local_datasources/auth/auth.dart';
 import 'package:projects_template/services/remote_datasources/auth/auth_impl_firebase.dart';
 import 'package:projects_template/services/remote_datasources/users/users_remote_ds_impl.dart';
-
 import 'auth.dart';
 
 class AuthRepoFirebaseImpl implements AuthRepo {
@@ -25,7 +22,6 @@ class AuthRepoFirebaseImpl implements AuthRepo {
     try {
       String id = await authRemoteDataSourceFirebaseImpl
           .signInWithEmailAndPassword(loginUserEntity: loginUserEntity);
-
       UserModel userModel =
           await usersRemoteDataSourceImplFirebase.getUserFromDataBase(id);
 

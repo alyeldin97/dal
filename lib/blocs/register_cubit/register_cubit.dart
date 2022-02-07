@@ -13,17 +13,22 @@ part 'register_state.dart';
 class RegisterCubit extends Cubit<RegisterState> {
   UsersRepo usersRepo;
   AuthRepo authRepo;
+  int isMale = 0;
 
   RegisterCubit(this.usersRepo, this.authRepo) : super(RegisterInitial());
 
   bool isPasswordVisibile = false;
   RegisterUserEntity? registerUserEntity;
-   AutovalidateMode autovalidateMode=AutovalidateMode.disabled;
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
-  void startValidating(){
-    autovalidateMode=AutovalidateMode.always;
+  void setIsMale(int isMaleFromUI) {
+    isMale = isMaleFromUI;
+    emit(RegisterIsMaleSwitchedState(isMale));
+  }
+
+  void startValidating() {
+    autovalidateMode = AutovalidateMode.always;
     emit(RegisterStartValidationState());
-
   }
 
   void passwordVisibilityToggled() {
@@ -58,8 +63,4 @@ class RegisterCubit extends Cubit<RegisterState> {
                 emit(RegisterWithEmailAndPasswordFailure(failure: failure)),
             (r) => null));
   }
-
-  //Events
-  //1-toggle visibilty
-  //2-sign up pressed
 }

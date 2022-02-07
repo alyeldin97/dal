@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projects_template/configs/constants/api_urls.dart';
+import 'package:projects_template/configs/constants/failure.dart';
 import 'package:projects_template/models/category.dart';
 import 'package:projects_template/services/errors/failure.dart';
 
@@ -15,14 +16,22 @@ class CategoriesRemoteDataSourceImplFirebase
           FireBaseCollectionRefernces.categoriesCollection;
 
       QuerySnapshot querySnapshot = await categoriesCollectionReference.get();
-
+      bool dataIsFromCache = querySnapshot.metadata.isFromCache;
+      if (dataIsFromCache) {
+        throw socketFailure();
+      }
       for (var doc in querySnapshot.docs) {
         var map = doc.data() as Map<String, dynamic>;
         categoryModels.add(CategoryModel.fromMap(map));
       }
+
       return categoryModels;
     } catch (e) {
-      throw defaultFailure();
+      if (e is Failure && e.code == FailureCodes.socket) {
+        rethrow;
+      } else {
+        throw defaultFailure();
+      }
     }
   }
 }

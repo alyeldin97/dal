@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projects_template/configs/constants/api_urls.dart';
 import 'package:projects_template/models/user.dart';
@@ -13,6 +15,23 @@ class UsersRemoteDataSourceImplFirebase implements UsersRemoteDataSource {
 
       await currentUserDoc.set(userModel.toMap());
     } catch (e) {
+      throw defaultFailure();
+    }
+  }
+
+  @override
+  Future<void> updateUserInDatabase(UserModel userModel) async {
+    try {
+      DocumentReference<Map<String, dynamic>> currentUserDoc =
+          FireBaseCollectionRefernces.usersCollection.doc(userModel.id);
+      print('remote 1');
+      await currentUserDoc
+          .update(userModel.toMap())
+          .timeout(const Duration(seconds: 60));
+    } catch (e) {
+      if (e is TimeoutException) {
+        throw socketFailure();
+      }
       throw defaultFailure();
     }
   }

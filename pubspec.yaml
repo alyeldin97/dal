@@ -28,26 +28,29 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   another_flushbar: ^1.10.26
+  bloc: ^8.0.2
   cloud_firestore: ^3.1.6
   cupertino_icons: ^1.0.2
   dartz: ^0.10.0
   equatable: ^2.0.3
   firebase_auth: ^3.3.5
   firebase_core: ^1.11.0
+  firebase_storage: ^10.2.6
   flutter:
     sdk: flutter
-  bloc: ^8.0.2
   flutter_bloc: ^8.0.1
-  timeago: ^3.2.1
   flutter_facebook_auth: ^4.0.1
+  flutter_localizations:
+    sdk: flutter
   flutter_screenutil: ^5.1.0
   google_sign_in: ^5.2.3
-  flutter_localizations: 
-    sdk: flutter  
   hive: ^2.0.5
   hive_flutter: ^1.1.0
   http: ^0.13.4
+  image_picker: ^0.8.4+5
+  path_provider: ^2.0.8
   smooth_page_indicator: ^1.0.0+2
+  timeago: ^3.2.1
 
 dev_dependencies:
   build_runner: ^2.1.5

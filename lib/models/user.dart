@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:projects_template/configs/constants/json_keys.dart';
 import 'package:projects_template/entities/user.dart';
 import 'package:projects_template/models/null_checkers.dart';
@@ -9,6 +11,9 @@ class UserModel {
   String name;
   String imageUrl;
   String phoneNumber;
+  String address;
+  bool isMale;
+
   List<ReviewModel> reviews;
 
   UserModel({
@@ -18,6 +23,8 @@ class UserModel {
     required this.imageUrl,
     required this.reviews,
     required this.phoneNumber,
+    required this.address,
+    required this.isMale,
   });
 
   UserEntity toEntity() {
@@ -25,20 +32,25 @@ class UserModel {
         email: email,
         id: id,
         name: name,
+        isMale: isMale,
+        imageUrl: imageUrl,
         phoneNumber: phoneNumber,
+        address: address,
         reviews: reviews.map((review) => review.toEntity()).toList());
   }
 
   factory UserModel.fromEntity(UserEntity userEntity) {
     return UserModel(
+        isMale: userEntity.isMale,
         email: userEntity.email,
+        address: userEntity.address,
         id: userEntity.id,
         name: userEntity.name,
         phoneNumber: userEntity.phoneNumber,
         reviews: userEntity.reviews
             .map((review) => ReviewModel.fromEntity(review))
             .toList(),
-        imageUrl: '');
+        imageUrl: userEntity.imageUrl);
   }
 
   Map<String, dynamic> toMap() {
@@ -46,6 +58,8 @@ class UserModel {
       JsonKeys.id: id,
       JsonKeys.email: email,
       JsonKeys.name: name,
+      JsonKeys.address: address,
+      JsonKeys.isMale: isMale,
       JsonKeys.phoneNumber: phoneNumber,
       JsonKeys.reviews: reviews.map((review) => review.toMap()).toList(),
       JsonKeys.imageUrl: imageUrl,
@@ -58,6 +72,8 @@ class UserModel {
     String? name = map[JsonKeys.name] as String?;
     String? imageUrl = map[JsonKeys.imageUrl] as String?;
     String? phoneNumber = map[JsonKeys.phoneNumber] as String?;
+    String? address = map[JsonKeys.address] as String?;
+    bool? isMale = map[JsonKeys.isMale] as bool?;
 
     List<dynamic>? reviews = map[JsonKeys.reviews];
 
@@ -67,6 +83,8 @@ class UserModel {
       name: name.ifNullOrEmptyReturn(''),
       imageUrl: imageUrl.ifNullOrEmptyReturn(''),
       phoneNumber: phoneNumber.ifNullOrEmptyReturn(''),
+      address: address.ifNullOrEmptyReturn(''),
+      isMale: isMale.ifNullReturn(true),
       reviews: reviews != null
           ? reviews.map((reviewMap) => ReviewModel.fromMap(reviewMap)).toList()
           : [],

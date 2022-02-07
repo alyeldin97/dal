@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:projects_template/configs/constants/hive.dart';
 import 'package:projects_template/configs/constants/images.dart';
+import 'package:projects_template/entities/user.dart';
 import 'package:projects_template/services/helpers/hive_helper.dart';
 import 'package:projects_template/services/local_datasources/onboarding/onboarding_impl.dart';
 import 'package:projects_template/views/utils/navigators.dart';
 import 'package:projects_template/views/utils/routes.dart';
+
+UserEntity? CURRENT_USER;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -38,8 +41,9 @@ class _SplashScreenState extends State<SplashScreen> {
             HiveHelper(HiveConstants.onboarding))
         .checkOnboardingDone();
     if (isCached) {
-      bool isAlreadyLoggedIn = await
-          HiveHelper(HiveConstants.user).getWithKey(HiveConstants.user) != null;
+      bool isAlreadyLoggedIn =
+          await HiveHelper(HiveConstants.user).getWithKey(HiveConstants.user) !=
+              null;
       navigateToAuthScreenOrChooseCategoryScreen(isAlreadyLoggedIn);
     } else {
       navigateToOnboardingScreen();
@@ -54,8 +58,10 @@ class _SplashScreenState extends State<SplashScreen> {
     AppNavigator.navigateToRouteReplacement(Routes.onboardingRoute, context);
   }
 
-  void navigateToAuthScreenOrChooseCategoryScreen(isAlreadyLoggedIn) {
+  void navigateToAuthScreenOrChooseCategoryScreen(isAlreadyLoggedIn) async {
     if (isAlreadyLoggedIn) {
+      CURRENT_USER =
+          await HiveHelper(HiveConstants.user).getWithKey(HiveConstants.user);
       AppNavigator.navigateToRouteReplacement(Routes.chooseCategory, context);
     } else {
       AppNavigator.navigateToRouteReplacement(Routes.loginRoute, context);

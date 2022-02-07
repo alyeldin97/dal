@@ -47,12 +47,9 @@ class CategoryItem extends StatelessWidget {
     );
   }
 
-  void navigateToLayOutScreen(context, category) {
-   
-    BlocProvider.of<LayoutCubit>(context).initiateNotch(category);
+  void navigateToLayOutScreen(context, category)async {
+    await BlocProvider.of<LayoutCubit>(context).initiateNotch(category);
     BlocProvider.of<HomeCubit>(context).getAllPostsById(category.id);
-    AppNavigator.navigateToRoute(
-       Routes.layOut,
-        context);
+    AppNavigator.navigateToRoute(Routes.layOut, context);
   }
 }

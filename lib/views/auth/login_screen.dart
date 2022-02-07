@@ -4,14 +4,23 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projects_template/blocs/login_cubit/login_cubit.dart';
+import 'package:projects_template/configs/constants/failure.dart';
+import 'package:projects_template/configs/constants/hive.dart';
 import 'package:projects_template/configs/global_app_dependencies.dart';
+import 'package:projects_template/services/helpers/hive_helper.dart';
+import 'package:projects_template/services/local_datasources/auth/auth_impl_hive.dart';
+import 'package:projects_template/services/remote_datasources/auth/auth_impl_firebase.dart';
+import 'package:projects_template/services/remote_datasources/users/users_remote_ds_impl.dart';
+import 'package:projects_template/services/repo/auth/auth_impl_firebase.dart';
 import 'package:projects_template/views/auth/widgets/check_box.dart';
 import 'package:projects_template/views/auth/widgets/image.dart';
 import 'package:projects_template/views/auth/widgets/login_button.dart';
 import 'package:projects_template/views/auth/widgets/login_form.dart';
 import 'package:projects_template/views/auth/widgets/register_nav.dart';
 import 'package:projects_template/views/auth/widgets/social_buttons.dart';
+import 'package:projects_template/views/core/error_screen.dart';
 import 'package:projects_template/views/core/reusable_widgets.dart';
+import 'package:projects_template/views/splash_screen/splash_screen.dart';
 import 'package:projects_template/views/utils/colors.dart';
 import 'package:projects_template/views/utils/navigators.dart';
 import 'package:projects_template/views/utils/routes.dart';
@@ -22,21 +31,25 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GlobalAppDependencies.loginCubit,
+      create: (context) => LoginCubit(AuthRepoFirebaseImpl(
+          AuthRemoteDataSourceFirebaseImpl(),
+          AuthLocalDataSourceImplHive(HiveHelper(HiveConstants.user)),
+          UsersRemoteDataSourceImplFirebase())),
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
-          
-          if (state is LoginSignInWithEmailAndPasswordError) {
-            createErrorPopUp(state.failure, context);
-          } else if (state is LoginSignInWithGoogleError) {
-            createErrorPopUp(state.failure, context);
-          } else if (state is GoogleOrFacebookLoginError) {
-            createErrorPopUp(state.failure, context);
-          } else if (state is LoginSignInWithFacebookError) {
-            createErrorPopUp(state.failure, context);
-          } else if (state is LoginSignInWithEmailAndPasswordSuccess ||
-              state is LoginSignInWithGoogleSuccess ||
-              state is LoginSignInWithFacebookSuccess) {
+          bool stateIsFailure = state is LoginSignInWithEmailAndPasswordError ||
+              state is LoginSignInWithGoogleError ||
+              state is LoginSignInWithFacebookError ||
+              state is GoogleOrFacebookLoginError;
+          bool stateIsSuccess =
+              state is LoginSignInWithEmailAndPasswordSuccess ||
+                  state is LoginSignInWithFacebookSuccess ||
+                  state is LoginSignInWithGoogleSuccess;
+
+          if (stateIsFailure) {
+            showErrorPopUpOrScreen(state, context);
+          } else if (stateIsSuccess) {
+            initiateGlobalUser(state);
             navigateToChooseCategoryScreen(context);
           }
         },
@@ -75,11 +88,29 @@ class LoginScreen extends StatelessWidget {
     }
   }
 
+  void initiateGlobalUser(state) {
+    if (state is LoginSignInWithEmailAndPasswordSuccess) {
+      CURRENT_USER = state.userEntity;
+    } else if (state is LoginSignInWithFacebookSuccess) {
+      CURRENT_USER = state.userEntity;
+    } else if (state is LoginSignInWithGoogleSuccess) {
+      CURRENT_USER = state.userEntity;
+    }
+  }
+
   void navigateToChooseCategoryScreen(context) {
     AppNavigator.navigateToRouteReplacement(Routes.chooseCategory, context);
   }
 
-  void createErrorPopUp(failure, context) {
-    FlushbarHelper.createError(message: failure.message).show(context);
+  void showErrorPopUpOrScreen(state, context) {
+    bool socketError = state.failure.code == FailureCodes.socket;
+    if (socketError) {
+      AppNavigator.navigateToScreen(
+          ErrorScreen(message: state.failure.message, screen: Screens.login),
+          context);
+      FocusScope.of(context).unfocus();
+    } else {
+      FlushbarHelper.createError(message: state.failure.message).show(context);
+    }
   }
 }

@@ -1,25 +1,25 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projects_template/blocs/categories_cubit/categroies_cubit.dart';
 import 'package:projects_template/configs/constants/images.dart';
-import 'package:projects_template/services/remote_datasources/categories/categories_remote_ds_impl_firebase.dart';
-import 'package:projects_template/services/repo/categories/categories_repo_impl_firebase.dart';
-import 'package:projects_template/views/choose_category/widgets/categories_grid.dart';
-import 'package:projects_template/views/choose_category/widgets/choose_category_text.dart';
+import 'package:projects_template/views/choose_category_screen/widgets/categories_grid.dart';
+import 'package:projects_template/views/choose_category_screen/widgets/choose_category_text.dart';
+import 'package:projects_template/views/core/error_screen.dart';
 import 'package:projects_template/views/core/reusable_widgets.dart';
 import 'package:projects_template/views/utils/colors.dart';
-import 'package:projects_template/views/utils/textstyles.dart';
+import 'package:projects_template/views/utils/navigators.dart';
 
 class ChooseCategoryScreen extends StatelessWidget {
   const ChooseCategoryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CategroiesCubit(
-          CategoriesRepoImplFirebase(CategoriesRemoteDataSourceImplFirebase()))..getAllCategories(),
+    return BlocListener<CategroiesCubit, CategroiesState>(
+      listener: (context, state) {
+        if (state is CategroiesGetAllCategriesErrorState) {
+          navigateToErrorScreen(state.failure, context);
+        }
+      },
       child: BlocBuilder<CategroiesCubit, CategroiesState>(
         builder: (context, state) {
           return Scaffold(
@@ -28,7 +28,6 @@ class ChooseCategoryScreen extends StatelessWidget {
               decoration: boxDecoration(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   const HeightBox(100),
                   const ChooseCategoryText(),
@@ -47,11 +46,9 @@ class ChooseCategoryScreen extends StatelessWidget {
     if (state is CategroiesGetAllCategriesSuccessState) {
       return CategoriesGrid(categories: state.categoriesEntities);
     } else if (state is CategroiesGetAllCategriesLoadingState) {
-      return Loading();
+      return const Loading();
     } else {
-      return Center(
-        child: PrimaryTextMedium(text: 'عطل', fontSize: 13),
-      );
+      return Container();
     }
   }
 
@@ -63,5 +60,11 @@ class ChooseCategoryScreen extends StatelessWidget {
           ),
           fit: BoxFit.fill),
     );
+  }
+
+  void navigateToErrorScreen(failure, context) {
+    AppNavigator.navigateToScreen(
+        ErrorScreen(message: failure.message, screen: Screens.categories),
+        context);
   }
 }

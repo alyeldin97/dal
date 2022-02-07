@@ -7,14 +7,13 @@ class APIUrls {
 class FireBaseCollectionRefernces {
   static const _users = 'users';
   static const _categories = 'categories';
-
-
-
   static final usersCollection = FirebaseFirestore.instance.collection(_users);
-  static final categoriesCollection = FirebaseFirestore.instance.collection(_categories);
-
+  static final categoriesCollection =
+      FirebaseFirestore.instance.collection(_categories);
 }
 
-class FirebaseConstants{
+class FirebaseConstants {
   static const posts = 'posts';
+  static const firestorage_profile_images = '/profile_images';
+
 }

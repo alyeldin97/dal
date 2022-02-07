@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:projects_template/blocs/home_cubit/home_cubit.dart';
 import 'package:projects_template/blocs/layout_cubit/layout_cubit.dart';
 import 'package:projects_template/configs/constants/images.dart';
-import 'package:projects_template/configs/global_app_dependencies.dart';
 import 'package:projects_template/entities/category.dart';
 import 'package:projects_template/views/utils/colors.dart';
 
 class LayOutScreen extends StatefulWidget {
   final CategoryEntity category;
-  LayOutScreen({Key? key, required this.category}) : super(key: key);
+  const LayOutScreen({Key? key, required this.category}) : super(key: key);
 
   @override
   State<LayOutScreen> createState() => _LayOutScreenState();
@@ -28,9 +26,9 @@ class _LayOutScreenState extends State<LayOutScreen> {
     return BlocBuilder<LayoutCubit, LayoutState>(
       builder: (context, state) {
         layoutCubit = BlocProvider.of<LayoutCubit>(context);
-
         currentIndex = layoutCubit.currentIndex;
         currentScreen = layoutCubit.screens![currentIndex];
+
         return Directionality(
           textDirection: TextDirection.rtl,
           child: Scaffold(
@@ -38,35 +36,30 @@ class _LayOutScreenState extends State<LayOutScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             body: currentScreen,
-            bottomNavigationBar: BottomAppBar(
-              clipBehavior: Clip.antiAlias,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  bottomNavBarItem(
-                      AssetImagesPaths.profileIcon, currentIndex == 3, 3),
-                  bottomNavBarItem(
-                      AssetImagesPaths.categoriesIcon, currentIndex == 2, 2),
-                  bottomNavBarItem(
-                      AssetImagesPaths.favIcon, currentIndex == 1, 1),
-                  bottomNavBarItem(
-                      AssetImagesPaths.homeIcon, currentIndex == 0, 0),
-                ],
-              ),
-              shape: const CircularNotchedRectangle(),
-              color: AppColors.green,
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: AppColors.green,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-              elevation: 2.0,
-            ),
+            bottomNavigationBar: bottomAppBar(),
+            floatingActionButton: floatingActionButton(),
           ),
         );
       },
+    );
+  }
+
+  BottomAppBar bottomAppBar() {
+    return BottomAppBar(
+      clipBehavior: Clip.antiAlias,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          bottomNavBarItem(AssetImagesPaths.profileIcon, currentIndex == 3, 3),
+          bottomNavBarItem(
+              AssetImagesPaths.categoriesIcon, currentIndex == 2, 2),
+          bottomNavBarItem(AssetImagesPaths.favIcon, currentIndex == 1, 1),
+          bottomNavBarItem(AssetImagesPaths.homeIcon, currentIndex == 0, 0),
+        ],
+      ),
+      shape: const CircularNotchedRectangle(),
+      color: AppColors.green,
     );
   }
 
@@ -92,6 +85,20 @@ class _LayOutScreenState extends State<LayOutScreen> {
                 ],
               )
             : Image.asset(icon),
+      ),
+    );
+  }
+
+  Visibility floatingActionButton() {
+    bool keyBoardIsVisible = MediaQuery.of(context).viewInsets.bottom == 0;
+    return Visibility(
+      visible: keyBoardIsVisible,
+      child: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppColors.green,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+        elevation: 2.0,
       ),
     );
   }

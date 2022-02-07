@@ -19,11 +19,20 @@ class AuthLocalDataSourceImplHive implements AuthLocalDataSource {
   }
 
   @override
-  Future<UserEntity> getCachedUser() async{
-    try{
-     dynamic user = await hiveHelper.getWithKey(HiveConstants.user);
-     return user as UserEntity;
-    }catch(e){
+  Future<UserEntity> getCachedUser() async {
+    try {
+      dynamic user = await hiveHelper.getWithKey(HiveConstants.user);
+      return user as UserEntity;
+    } catch (e) {
+      throw defaultFailure();
+    }
+  }
+
+  @override
+  Future<bool> userIsCached() async{
+    try {
+      return await hiveHelper.existsAndNotNull(HiveConstants.user);
+    } catch (e) {
       throw defaultFailure();
     }
   }
