@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-
 import 'package:projects_template/entities/user.dart';
 import 'package:projects_template/models/user.dart';
 import 'package:projects_template/services/errors/failure.dart';

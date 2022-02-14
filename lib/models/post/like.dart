@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:projects_template/configs/constants/images.dart';
 import 'package:projects_template/configs/constants/json_keys.dart';
 import 'package:projects_template/entities/post/like.dart';

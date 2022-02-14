@@ -3,10 +3,11 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:projects_template/blocs/login_cubit/login_cubit.dart';
 import 'package:projects_template/configs/constants/failure.dart';
+import 'package:projects_template/configs/constants/get_it.dart';
 import 'package:projects_template/configs/constants/hive.dart';
-import 'package:projects_template/configs/global_app_dependencies.dart';
 import 'package:projects_template/services/helpers/hive_helper.dart';
 import 'package:projects_template/services/local_datasources/auth/auth_impl_hive.dart';
 import 'package:projects_template/services/remote_datasources/auth/auth_impl_firebase.dart';
@@ -31,10 +32,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(AuthRepoFirebaseImpl(
-          AuthRemoteDataSourceFirebaseImpl(),
-          AuthLocalDataSourceImplHive(HiveHelper(HiveConstants.user)),
-          UsersRemoteDataSourceImplFirebase())),
+      create: (context) => GetIt.I.get<LoginCubit>(instanceName: GetItConstants.loginCubit),
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           bool stateIsFailure = state is LoginSignInWithEmailAndPasswordError ||

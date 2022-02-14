@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:projects_template/configs/constants/hive.dart';
 import 'package:projects_template/entities/user.dart';
+import 'package:projects_template/injection_container.dart';
 import 'package:projects_template/my_app.dart';
 import 'package:projects_template/services/helpers/hive_helper.dart';
 import 'package:projects_template/views/utils/colors.dart';
@@ -20,6 +21,7 @@ void main() async {
   await Firebase.initializeApp();
   await initHive();
   await tester();
+  initGetIt();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -37,7 +39,7 @@ void main() async {
 
 
 Future tester() async {
-  //await HiveHelper(HiveConstants.user).updateWithKey(null, HiveConstants.user);
+  await HiveHelper(HiveConstants.user).updateWithKey(null, HiveConstants.user);
 }
 
 Future initHive() async {

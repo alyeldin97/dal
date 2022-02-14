@@ -1,7 +1,4 @@
-import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:projects_template/configs/constants/json_keys.dart';
 import 'package:projects_template/entities/post/post.dart';
 import 'package:projects_template/models/null_checkers.dart';
@@ -10,7 +7,7 @@ import 'package:projects_template/models/post/comment.dart';
 import 'package:projects_template/models/post/like.dart';
 import 'package:projects_template/models/post/review.dart';
 
-class PostModel {
+class PostModel  {
   String id;
   String address;
   String posterName;

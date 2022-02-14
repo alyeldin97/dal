@@ -2,10 +2,9 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:projects_template/blocs/profile_cubit/profile_cubit.dart';
-import 'package:projects_template/services/remote_datasources/images_upload/images_upload_remote_ds_impl_firebase.dart';
-import 'package:projects_template/services/remote_datasources/users/users_remote_ds_impl.dart';
-import 'package:projects_template/services/repo/users/users_repo_impl_firebase.dart';
+import 'package:projects_template/configs/constants/get_it.dart';
 import 'package:projects_template/views/core/reusable_widgets.dart';
 import 'package:projects_template/views/profile/widgets/buttons_row.dart';
 import 'package:projects_template/views/profile/widgets/form.dart';
@@ -17,12 +16,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfileCubit(
-        UsersRepoImplFirebase(
-            usersRemoteDataSource: UsersRemoteDataSourceImplFirebase(),
-            imageUploadRemoteDataSource:
-                ImageUploadRemoteDataSourceFirebaseImpl()),
-      )..initiateProfile(),
+      create: (context) =>  GetIt.I.get<ProfileCubit>(instanceName: GetItConstants.profileCubit)..initiateProfile(),
       child: BlocListener<ProfileCubit, ProfileState>(
         listener: (context, state) {
           showError(state, context);

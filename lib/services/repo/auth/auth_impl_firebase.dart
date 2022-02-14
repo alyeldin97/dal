@@ -5,25 +5,25 @@ import 'package:projects_template/entities/login.dart';
 import 'package:projects_template/models/user.dart';
 import 'package:projects_template/services/errors/failure.dart';
 import 'package:projects_template/services/local_datasources/auth/auth.dart';
-import 'package:projects_template/services/remote_datasources/auth/auth_impl_firebase.dart';
-import 'package:projects_template/services/remote_datasources/users/users_remote_ds_impl.dart';
+import 'package:projects_template/services/remote_datasources/auth/auth.dart';
+import 'package:projects_template/services/remote_datasources/users/users_remote_ds.dart';
 import 'auth.dart';
 
 class AuthRepoFirebaseImpl implements AuthRepo {
-  AuthRemoteDataSourceFirebaseImpl authRemoteDataSourceFirebaseImpl;
+  AuthRemoteDataSource authRemoteDataSource;
   AuthLocalDataSource authLocalDataSource;
-  UsersRemoteDataSourceImplFirebase usersRemoteDataSourceImplFirebase;
+  UsersRemoteDataSource usersRemoteDataSource;
 
-  AuthRepoFirebaseImpl(this.authRemoteDataSourceFirebaseImpl,
-      this.authLocalDataSource, this.usersRemoteDataSourceImplFirebase);
+  AuthRepoFirebaseImpl(this.authRemoteDataSource,
+      this.authLocalDataSource, this.usersRemoteDataSource);
   @override
   Future<Either<Failure, UserEntity>> signInWithEmailAndPassword(
       {required LoginUserEntity loginUserEntity}) async {
     try {
-      String id = await authRemoteDataSourceFirebaseImpl
+      String id = await authRemoteDataSource
           .signInWithEmailAndPassword(loginUserEntity: loginUserEntity);
       UserModel userModel =
-          await usersRemoteDataSourceImplFirebase.getUserFromDataBase(id);
+          await usersRemoteDataSource.getUserFromDataBase(id);
 
       return right(userModel.toEntity());
     } on Failure catch (failure) {
@@ -35,16 +35,16 @@ class AuthRepoFirebaseImpl implements AuthRepo {
   Future<Either<Failure, UserEntity?>> signInWithFacebook() async {
     try {
       UserModel? userModel =
-          await authRemoteDataSourceFirebaseImpl.signInWithFacebook();
+          await authRemoteDataSource.signInWithFacebook();
        bool userExistsInFireStore =
-          await usersRemoteDataSourceImplFirebase.userExists(userModel!.id);
+          await usersRemoteDataSource.userExists(userModel!.id);
 
       if (userExistsInFireStore) {
-        userModel = await usersRemoteDataSourceImplFirebase
+        userModel = await usersRemoteDataSource
             .getUserFromDataBase(userModel.id);
         return right(userModel.toEntity());
       } else {
-        await usersRemoteDataSourceImplFirebase.createUserInDatabase(userModel);
+        await usersRemoteDataSource.createUserInDatabase(userModel);
         return right(userModel.toEntity());
       }
     } on Failure catch (failure) {
@@ -56,16 +56,16 @@ class AuthRepoFirebaseImpl implements AuthRepo {
   Future<Either<Failure, UserEntity?>> signInWithGoogle() async {
     try {
       UserModel? userModel =
-          await authRemoteDataSourceFirebaseImpl.signInWithGoogle();
+          await authRemoteDataSource.signInWithGoogle();
       bool userExistsInFireStore =
-          await usersRemoteDataSourceImplFirebase.userExists(userModel!.id);
+          await usersRemoteDataSource.userExists(userModel!.id);
 
       if (userExistsInFireStore) {
-        userModel = await usersRemoteDataSourceImplFirebase
+        userModel = await usersRemoteDataSource
             .getUserFromDataBase(userModel.id);
         return right(userModel.toEntity());
       } else {
-        await usersRemoteDataSourceImplFirebase.createUserInDatabase(userModel);
+        await usersRemoteDataSource.createUserInDatabase(userModel);
         return right(userModel.toEntity());
       }
     } on Failure catch (failure) {
@@ -77,7 +77,7 @@ class AuthRepoFirebaseImpl implements AuthRepo {
   Future<Either<Failure, UserEntity>> signUpWithEmailAndPassword(
       {required RegisterUserEntity registerUserEntity}) async {
     try {
-      UserModel userModel = await authRemoteDataSourceFirebaseImpl
+      UserModel userModel = await authRemoteDataSource
           .signUpWithEmailAndPassword(registerUserEntity: registerUserEntity);
       return right(userModel.toEntity());
     } on Failure catch (failure) {

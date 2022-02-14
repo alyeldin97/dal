@@ -27,7 +27,8 @@ class CategoriesRemoteDataSourceImplFirebase
 
       return categoryModels;
     } catch (e) {
-      if (e is Failure && e.code == FailureCodes.socket) {
+      bool internetConnectionErrorOccured=e is Failure && e.code == FailureCodes.socket;
+      if (internetConnectionErrorOccured) {
         rethrow;
       } else {
         throw defaultFailure();

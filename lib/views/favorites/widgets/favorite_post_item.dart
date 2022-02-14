@@ -21,7 +21,7 @@ class FavoritePostItem extends StatelessWidget {
      dateString = timeago.format(post.date, locale: 'ar');
     dateString = Convertors.convertToArabicNumbers(dateString);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
+      padding: EdgeInsets.symmetric(horizontal:10.w, vertical: 15.h),
       child: Material(
           elevation: 3,
           borderRadius: BorderRadius.circular(10.w),

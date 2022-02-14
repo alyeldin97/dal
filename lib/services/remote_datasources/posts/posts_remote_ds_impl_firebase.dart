@@ -3,6 +3,7 @@ import 'package:projects_template/configs/constants/api_urls.dart';
 import 'package:projects_template/configs/constants/failure.dart';
 import 'package:projects_template/models/post/post.dart';
 import 'package:projects_template/services/errors/failure.dart';
+import 'package:projects_template/services/remote_datasources/core/fire_base.dart';
 import 'package:projects_template/services/remote_datasources/posts/posts_remote_ds.dart';
 
 class PostsRemoteDataSourceImplFirebase implements PostsRemoteDataSource {
@@ -10,25 +11,20 @@ class PostsRemoteDataSourceImplFirebase implements PostsRemoteDataSource {
   Future<List<PostModel>> getAllPostsByCategoryId(String categoryId) async {
     try {
       List<PostModel> postsModels = [];
-      CollectionReference<Map<String, dynamic>> categoriesCollectionReference =
-          FireBaseCollectionRefernces.categoriesCollection;
-
-      var currentCategoryDoc = categoriesCollectionReference.doc(categoryId);
 
       CollectionReference<Map<String, dynamic>>
           currentCategoryPostsCollecntionReference =
-          currentCategoryDoc.collection(FirebaseConstants.posts);
+          getCollectionFromDocumentInCollection(
+              baseCollectionName: FireBaseCollectionRefernces.categories,
+              docName: categoryId,
+              childCollectionName: FireBaseCollectionRefernces.posts);
 
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await currentCategoryPostsCollecntionReference.get();
-      bool dataIsFromCache = querySnapshot.metadata.isFromCache;
-      
-      if (dataIsFromCache) {
-        throw socketFailure();
-      }
 
-      for (var doc in querySnapshot.docs) {
-        var map = doc.data();
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> postsDocs =
+          await getDocsFromCollection(currentCategoryPostsCollecntionReference);
+
+      for (var postDoc in postsDocs) {
+        var map = postDoc.data();
         postsModels.add(PostModel.fromMap(map));
       }
 

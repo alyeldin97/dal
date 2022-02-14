@@ -4,8 +4,10 @@ import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:projects_template/blocs/register_cubit/register_cubit.dart';
 import 'package:projects_template/configs/constants/failure.dart';
+import 'package:projects_template/configs/constants/get_it.dart';
 import 'package:projects_template/configs/constants/hive.dart';
 import 'package:projects_template/configs/global_app_dependencies.dart';
 import 'package:projects_template/services/helpers/hive_helper.dart';
@@ -34,15 +36,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RegisterCubit(
-          UsersRepoImplFirebase(
-              usersRemoteDataSource: UsersRemoteDataSourceImplFirebase(),
-              imageUploadRemoteDataSource:
-                  ImageUploadRemoteDataSourceFirebaseImpl()),
-          AuthRepoFirebaseImpl(
-              AuthRemoteDataSourceFirebaseImpl(),
-              AuthLocalDataSourceImplHive(HiveHelper(HiveConstants.user)),
-              UsersRemoteDataSourceImplFirebase())),
+      create: (context) => GetIt.I.get<RegisterCubit>(instanceName: GetItConstants.registerCubit),
       child: BlocListener<RegisterCubit, RegisterState>(
         listener: (context, state) {
           if (state is RegisterWithEmailAndPasswordFailure) {

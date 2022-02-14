@@ -3,7 +3,6 @@ import 'package:projects_template/entities/category.dart';
 import 'package:projects_template/views/auth/login_screen.dart';
 import 'package:projects_template/views/auth/register_screen.dart';
 import 'package:projects_template/views/choose_category_screen/choose_category_screen.dart';
-import 'package:projects_template/views/core/error_screen.dart';
 import 'package:projects_template/views/home/home_screen.dart';
 import 'package:projects_template/views/layout/lay_out_screen.dart';
 import 'package:projects_template/views/onboarding/onboarding_screen.dart';
