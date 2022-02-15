@@ -11,7 +11,7 @@ class ImageUploadRemoteDataSourceFirebaseImpl
       firebase_storage.FirebaseStorage.instance;
 
   @override
-  Future<String> uploadImage(File file) async {
+  Future<String> uploadProfileImage(File file) async {
     try {
       firebase_storage.Reference reference =
           firebaseStorage.ref(FirebaseConstants.firestorage_profile_images);

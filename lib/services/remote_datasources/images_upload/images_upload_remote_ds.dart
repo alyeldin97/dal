@@ -1,5 +1,5 @@
 import 'dart:io';
 
 abstract class ImageUploadRemoteDataSource {
-  Future<String> uploadImage(File file);
+  Future<String> uploadProfileImage(File file);
 }

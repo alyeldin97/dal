@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:projects_template/entities/category.dart';
 import 'package:projects_template/entities/post/comment.dart';
 import 'package:projects_template/entities/post/like.dart';
 import 'package:projects_template/entities/post/post.dart';
 import 'package:projects_template/entities/post/reply.dart';
 import 'package:projects_template/entities/post/review.dart';
-import 'package:projects_template/views/core/reusable_widgets.dart';
 import 'package:projects_template/views/favorites/widgets/favorite_post_item.dart';
-import 'package:projects_template/views/utils/colors.dart';
-import 'package:projects_template/views/utils/textstyles.dart';
+import 'package:projects_template/views/favorites/widgets/favorites_header.dart';
 
 class FavoritesScreen extends StatelessWidget {
   final CategoryEntity category;
@@ -22,21 +19,7 @@ class FavoritesScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HeightBox(100),
-          Padding(
-            padding: EdgeInsetsDirectional.only(start: 25.w),
-            child: const PrimaryTextSemiBold(
-              text: 'اعمالي المفضلة',
-              fontSize: 20,
-              color: AppColors.green,
-            ),
-          ),
-          const HeightBox(20),
-          const PrimaryTextLight(
-            text: '        "استعن بالله ولا تعجز"',
-            fontSize: 20,
-            color: AppColors.green,
-          ),
+          const FavoritesScreenHeader(),
           Column(
             children: [
               FavoritePostItem(
@@ -80,15 +63,11 @@ class FavoritesScreen extends StatelessWidget {
                     date: DateTime.now()),
               ),
             ],
-            // children: state.posts
-            //     .map((post) => FavoritePostItem(
-            //           post: post,
-            //           category: category,
-            //         ))
-            //     .toList(),
+           
           ),
         ],
       ),
     );
   }
 }
+

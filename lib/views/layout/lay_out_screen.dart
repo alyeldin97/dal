@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:projects_template/blocs/layout_cubit/layout_cubit.dart';
 import 'package:projects_template/configs/constants/images.dart';
 import 'package:projects_template/entities/category.dart';
+import 'package:projects_template/views/add_post/add_post_screen.dart';
 import 'package:projects_template/views/utils/colors.dart';
 
 class LayOutScreen extends StatefulWidget {
@@ -94,7 +95,17 @@ class _LayOutScreenState extends State<LayOutScreen> {
     return Visibility(
       visible: keyBoardIsVisible,
       child: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return AddPostSheet();
+            },
+            isScrollControlled: true,
+            isDismissible: false,
+            backgroundColor: Colors.transparent,
+          );
+        },
         backgroundColor: AppColors.green,
         tooltip: 'Increment',
         child: const Icon(Icons.add),

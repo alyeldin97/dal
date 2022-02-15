@@ -11,6 +11,7 @@ class CategroiesCubit extends Cubit<CategroiesState> {
   CategroiesCubit(this.categoriesRepo) : super(CategroiesInitial());
 
   CategoriesRepo categoriesRepo;
+  List<CategoryEntity> categories = [];
 
   void getAllCategories() async {
     emit(CategroiesGetAllCategriesLoadingState());
@@ -20,7 +21,10 @@ class CategroiesCubit extends Cubit<CategroiesState> {
     eitherCategroiesEntitiesOrFailure.fold(
         (failure) =>
             emit(CategroiesGetAllCategriesErrorState(failure: failure)),
-        (categoriesEntities) => emit(CategroiesGetAllCategriesSuccessState(
-            categoriesEntities: categoriesEntities)));
+        (categoriesEntities) {
+      categories = categoriesEntities;
+      emit(CategroiesGetAllCategriesSuccessState(
+          categoriesEntities: categoriesEntities));
+    });
   }
 }

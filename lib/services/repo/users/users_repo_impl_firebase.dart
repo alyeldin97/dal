@@ -37,7 +37,7 @@ class UsersRepoImplFirebase implements UsersRepo {
       bool uploadWithImage = pickedImage != null;
       if (uploadWithImage) {
         String imageUrl =
-            await imageUploadRemoteDataSource.uploadImage(pickedImage);
+            await imageUploadRemoteDataSource.uploadProfileImage(pickedImage);
         userEntity = userEntity.copyWith(imageUrl: imageUrl);
       }
       await usersRemoteDataSource
