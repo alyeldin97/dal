@@ -1,6 +1,5 @@
 import 'package:projects_template/entities/login.dart';
 import 'package:projects_template/entities/register.dart';
-import 'package:projects_template/entities/user.dart';
 import 'package:projects_template/models/user.dart';
 
 abstract class AuthRemoteDataSource {

@@ -10,13 +10,15 @@ import 'package:projects_template/views/profile/widgets/buttons_row.dart';
 import 'package:projects_template/views/profile/widgets/form.dart';
 import 'package:projects_template/views/profile/widgets/image.dart';
 
+import '../../injection_container.dart';
+
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>  GetIt.I.get<ProfileCubit>(instanceName: GetItConstants.profileCubit)..initiateProfile(),
+      create: (context) =>  sl<ProfileCubit>()..initiateProfile(),
       child: BlocListener<ProfileCubit, ProfileState>(
         listener: (context, state) {
           showError(state, context);

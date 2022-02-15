@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:projects_template/blocs/onboarding/onboarding_cubit.dart';
 import 'package:projects_template/configs/constants/get_it.dart';
+import 'package:projects_template/injection_container.dart';
 import 'package:projects_template/views/onboarding/widgets/onboarding_control.dart';
 import 'package:projects_template/views/onboarding/widgets/page_indicator.dart';
 import 'package:projects_template/views/onboarding/widgets/page_view.dart';
@@ -17,7 +18,7 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I.get<OnboardingCubit>(instanceName: GetItConstants.onBoardingCubit),
+      create: (context) => sl<OnboardingCubit>(),
       child: BlocListener<OnboardingCubit, OnboardingState>(
         listener: (context, state) {
           bool isCached = state is OnboardingCacheSuccess;

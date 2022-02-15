@@ -37,10 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateToOnboardingOrAuthOrHomeScreen() async {
     await waitThreeSeconds();
-    bool isCached = await OnboardingLocalDataSourceImpl(
+    bool hasOpennedAppBefore = await OnboardingLocalDataSourceImpl(
             HiveHelper(HiveConstants.onboarding))
         .checkOnboardingDone();
-    if (isCached) {
+    if (hasOpennedAppBefore) {
       bool isAlreadyLoggedIn =
           await HiveHelper(HiveConstants.user).getWithKey(HiveConstants.user) !=
               null;

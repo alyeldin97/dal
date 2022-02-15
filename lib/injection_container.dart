@@ -34,7 +34,7 @@ import 'package:projects_template/services/repo/users/users_repo.dart';
 import 'package:projects_template/services/repo/users/users_repo_impl_firebase.dart';
 import 'package:projects_template/blocs/login_cubit/login_cubit.dart';
 
-final GetIt sl = GetIt.instance();
+final GetIt sl = GetIt.instance;
 
 void initGetIt() {
   //^ Remote Data Sources
@@ -90,23 +90,24 @@ void initGetIt() {
   );
 
   //^Cubits
-  sl.registerFactory<CategroiesCubit>(() => CategroiesCubit(
+  sl.registerFactory(() => CategroiesCubit(
         sl(),
-      ),instanceName: GetItConstants.categoryCubit);
-  sl.registerFactory<HomeCubit>(() => HomeCubit(
+      ));
+  sl.registerFactory(() => HomeCubit(
         sl(),
-      ),instanceName: GetItConstants.homeCubit);
+      ));
 
-  sl.registerFactory<LayoutCubit>(() => LayoutCubit(),
-      instanceName: GetItConstants.layOutCubit);
-  sl.registerFactory<LoginCubit>(() => LoginCubit(
+  sl.registerFactory(() => LayoutCubit(),
+     // instanceName: GetItConstants.layOutCubit
+      );
+  sl.registerFactory(() => LoginCubit(
         sl(),
-      ),instanceName: GetItConstants.loginCubit);
-  sl.registerFactory<RegisterCubit>(() => RegisterCubit(sl(), sl()),instanceName: GetItConstants.registerCubit);
-  sl.registerFactory<ProfileCubit>(() => ProfileCubit(
+      ));
+  sl.registerFactory(() => RegisterCubit(sl(), sl()));
+  sl.registerFactory(() => ProfileCubit(
         sl(),
-      ),instanceName: GetItConstants.profileCubit);
-  sl.registerFactory<OnboardingCubit>(() => OnboardingCubit(
+      ),);
+  sl.registerFactory(() => OnboardingCubit(
         sl(),
-      ),instanceName: GetItConstants.onBoardingCubit);
+      ));
 }

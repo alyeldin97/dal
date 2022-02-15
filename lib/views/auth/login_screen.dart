@@ -1,18 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:projects_template/blocs/login_cubit/login_cubit.dart';
 import 'package:projects_template/configs/constants/failure.dart';
-import 'package:projects_template/configs/constants/get_it.dart';
-import 'package:projects_template/configs/constants/hive.dart';
-import 'package:projects_template/services/helpers/hive_helper.dart';
-import 'package:projects_template/services/local_datasources/auth/auth_impl_hive.dart';
-import 'package:projects_template/services/remote_datasources/auth/auth_impl_firebase.dart';
-import 'package:projects_template/services/remote_datasources/users/users_remote_ds_impl.dart';
-import 'package:projects_template/services/repo/auth/auth_impl_firebase.dart';
 import 'package:projects_template/views/auth/widgets/check_box.dart';
 import 'package:projects_template/views/auth/widgets/image.dart';
 import 'package:projects_template/views/auth/widgets/login_button.dart';
@@ -25,14 +16,15 @@ import 'package:projects_template/views/splash_screen/splash_screen.dart';
 import 'package:projects_template/views/utils/colors.dart';
 import 'package:projects_template/views/utils/navigators.dart';
 import 'package:projects_template/views/utils/routes.dart';
+import '../../injection_container.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I.get<LoginCubit>(instanceName: GetItConstants.loginCubit),
+      create: (context) => sl<LoginCubit>(),
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           bool stateIsFailure = state is LoginSignInWithEmailAndPasswordError ||

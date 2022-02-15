@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:projects_template/configs/constants/json_keys.dart';
 import 'package:projects_template/entities/category.dart';
 import 'package:projects_template/models/null_checkers.dart';

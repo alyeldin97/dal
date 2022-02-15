@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'package:projects_template/configs/constants/json_keys.dart';
 import 'package:projects_template/entities/user.dart';
 import 'package:projects_template/models/null_checkers.dart';
