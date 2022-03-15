@@ -30,14 +30,6 @@ void main() async {
 }
 
 
-
-
-
-
-
-
-
-
 Future tester() async {
   await HiveHelper(HiveConstants.user).updateWithKey(null, HiveConstants.user);
 }
