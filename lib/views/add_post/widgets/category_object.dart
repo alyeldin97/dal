@@ -21,7 +21,7 @@ class AddPostCategoryItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          PrimaryTextSemiBold(
+          const PrimaryTextSemiBold(
             text: 'جمع التبرعات',
             fontSize: 13,
             color: AppColors.green,
