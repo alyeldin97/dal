@@ -88,7 +88,7 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
       final googleSignin = GoogleSignIn();
       GoogleSignInAccount? userGoogleAccount = await googleSignin.signIn();
       bool userHasLoggedIn = userGoogleAccount != null;
-      
+
       if (userHasLoggedIn) {
         final googleAuth = await userGoogleAccount.authentication;
         final credential = GoogleAuthProvider.credential(
@@ -98,21 +98,30 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
 
         return userModel;
       } else {
-
+        print('ay haga socket1');
         throw socketFailure();
       }
     } on FirebaseAuthException catch (firebaseAuthException) {
       if (firebaseAuthException.code == 'network-request-failed') {
+        print('ay haga socket2');
+
         throw socketFailure();
       } else {
+        print('ay haga socket3');
+
         throw createUserWithCredntialsErrorHandler(firebaseAuthException);
       }
     } on SocketException catch (_) {
       throw socketFailure();
     } catch (e) {
       if (e is PlatformException || e is SocketException) {
+        print(e.toString());
+        print('ay haga socket4');
+
         throw socketFailure();
       } else {
+        print('ay haga socket5');
+
         throw defaultFailure();
       }
     }
@@ -168,5 +177,3 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
     return userModel;
   }
 }
-
-
