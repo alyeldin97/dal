@@ -14,3 +14,20 @@ class AddPostScreenHeaderText extends StatelessWidget {
             );
   }
 }
+
+class WideBar extends StatelessWidget {
+  const WideBar({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+              child: Container(
+                height: 5.h,
+                width: 169.w,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13.w),
+                    color: Colors.white),
+              ),
+            );
+  }
+}
